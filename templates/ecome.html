@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="static/ecome.css">
+    <title>Ecome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+
+  <!-- NavBar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Left side: Brand -->
+    <a class="navbar-brand" href="{% url 'ecome' %}">
+        {% load static %}
+      <img src="{% static 'images/ecome.png' %}" alt="Ecome" height="30" class="d-inline-block align-text-top">
+    </a>
+
+    <!-- Toggler (mobile view) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <!-- Center: Search Bar -->
+      <form class="d-flex mx-auto" role="search" style="width: 700px;">
+        <input class="form-control me-2" type="search" placeholder="Search ecome..." aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+      <!-- Right side: Buttons -->
+      <div class="d-flex ms-auto">
+        <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <h1 id="welcome">Welcome to Ecome</h1>
+
+    <!-- Loop -->
+
+<div class="container mt-5">
+  <div class="row">
+    {% if products %}
+      <h2 class="text-center mb-4 p-3">Products Listing</h2>
+      {% for product in products %}
+        <div class="col-md-3 mb-3">
+          <div class="card card-hover-zoom bg-dark text-white shadow rounded-4 border-0 h-100"
+              style="min-height: 500px;">
+            <img src="{{ product.image.url }}" class="card-img-top rounded-top-4"
+                 alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
+              <p class="card-text"><strong>Price:</strong> {{ product.price }}</p>
+              <p class="card-text"><small class="text-light">Posted by: {{ product.user.username }}</small></p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center">No products available.</p>
+    {% endif %}
+  </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
