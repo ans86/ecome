@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ laptop.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/laptopdetail.css' %}">
+</head>
+<body>
+    
+    <!-- Loop -->
+     <div class="container">
+  <div class="laptop-image">
+    <img src="{{ laptop.image.url }}" alt="{{ laptop.name }}">
+  </div>
+
+  <div class="laptop-details">
+    <h2>{{ laptop.name }}</h2>
+    <p><strong>CPU:</strong> {{ laptop.cpu }}</p>
+    <p><strong>RAM:</strong> {{ laptop.ram }}</p>
+    <p><strong>Price:</strong> {{ laptop.price }}</p>
+    <p><strong>About:</strong> {{ laptop.about }}</p>
+    <p><small>Posted by: {{ laptop.user.username }}</small></p>
+  </div>
+</div>
+
+</body>
+</html>

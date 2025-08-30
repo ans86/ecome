@@ -6,9 +6,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Background</title>
-  <link rel="stylesheet" href="{% static 'check.css' %}">
+  <link rel="stylesheet" href="{% static 'css/check.css' %}">
 </head>
 <body>
+
+<!-- Navbar -->
+<div id="nav-search" style="left: 0px; right: 0px;">
+  <div id="nav-bar-left"></div> 
+  <form id="nav-search-bar-form" accept-charset="utf-8" action="/s/ref=nb_sb_noss" class="nav-searchbar nav-progressive-attribute" method="GET" name="site-search" role="search">
+
+    <div class="nav-left">
+      <div id="nav-search-dropdown-card">
+        
+  <div class="nav-search-scope nav-sprite">
+    <div class="nav-search-facade" data-value="search-alias=aps">
+      <span id="nav-search-label-id" class="nav-search-label nav-progressive-content" style="width: auto;">All</span>
+      <i class="nav-icon"></i>
+    </div>
+    <label id="searchDropdownDescription" for="searchDropdownBox" class="nav-progressive-attribute" style="display:none">Select the department you want to search in</label>
+    <select aria-describedby="searchDropdownDescription" class="nav-search-dropdown searchSelect nav-progressive-attrubute nav-progressive-search-dropdown" data-nav-digest="k+fyIAyB82R9jVEmroQ0OWwSW3A=" data-nav-selected="0" id="searchDropdownBox" name="url" style="display: block; top: 2.5px;" tabindex="0" title="Search in">
+        <option selected="selected" value="search-alias=aps">All Departments</option>
+        <option value="search-alias=arts-crafts-intl-ship">Arts &amp; Crafts</option>
+        <option value="search-alias=automotive-intl-ship">Automotive</option>
+        <option value="search-alias=baby-products-intl-ship">Baby</option>
+        <option value="search-alias=beauty-intl-ship">Beauty &amp; Personal Care</option>
+        <option value="search-alias=stripbooks-intl-ship">Books</option>
+        <option value="search-alias=fashion-boys-intl-ship">Boys' Fashion</option>
+        <option value="search-alias=computers-intl-ship">Computers</option>
+        <option value="search-alias=deals-intl-ship">Deals</option>
+        <option value="search-alias=digital-music">Digital Music</option>
+        <option value="search-alias=electronics-intl-ship">Electronics</option>
+        <option value="search-alias=fashion-girls-intl-ship">Girls' Fashion</option>
+        <option value="search-alias=hpc-intl-ship">Health &amp; Household</option>
+        <option value="search-alias=kitchen-intl-ship">Home &amp; Kitchen</option>
+        <option value="search-alias=industrial-intl-ship">Industrial &amp; Scientific</option>
+        <option value="search-alias=digital-text">Kindle Store</option>
+        <option value="search-alias=luggage-intl-ship">Luggage</option>
+        <option value="search-alias=fashion-mens-intl-ship">Men's Fashion</option>
+        <option value="search-alias=movies-tv-intl-ship">Movies &amp; TV</option>
+        <option value="search-alias=music-intl-ship">Music, CDs &amp; Vinyl</option>
+        <option value="search-alias=pets-intl-ship">Pet Supplies</option>
+        <option value="search-alias=instant-video">Prime Video</option>
+        <option value="search-alias=software-intl-ship">Software</option>
+        <option value="search-alias=sporting-intl-ship">Sports &amp; Outdoors</option>
+        <option value="search-alias=tools-intl-ship">Tools &amp; Home Improvement</option>
+        <option value="search-alias=toys-and-games-intl-ship">Toys &amp; Games</option>
+        <option value="search-alias=videogames-intl-ship">Video Games</option>
+        <option value="search-alias=fashion-womens-intl-ship">Women's Fashion</option>
+    </select>
+  </div>
+
+      </div>
+    </div>
+    <div class="nav-fill">
+      <div class="nav-search-field ">
+          <label for="twotabsearchtextbox" style="display: none;">Search Amazon</label>
+          <input type="text" id="twotabsearchtextbox" value="" name="field-keywords" autocomplete="off" placeholder="Search Amazon" class="nav-input nav-progressive-attribute" dir="auto" tabindex="0" aria-label="Search Amazon" role="searchbox" aria-autocomplete="list" aria-controls="sac-autocomplete-results-container" aria-expanded="false" aria-haspopup="grid" spellcheck="false">
+      </div>
+      <div id="nav-iss-attach"></div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-search-submit nav-sprite">
+        <span id="nav-search-submit-text" class="nav-search-submit-text nav-sprite nav-progressive-attribute" aria-label="Go">
+          <input id="nav-search-submit-button" type="submit" class="nav-input nav-progressive-attribute" value="Go" tabindex="0">
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+
+
+
   <video autoplay muted loop id="bg-video">
     <source src="{% static 'videos/background.mp4' %}" type="video/mp4">
     Your browser does not support HTML5 video.

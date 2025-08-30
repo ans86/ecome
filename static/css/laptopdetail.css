@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 50px;
+  padding: 20px;
+}
+
+.laptop-image {
+  flex: 1;
+  max-width: 400px;
+}
+
+.laptop-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.laptop-details {
+  flex: 2;
+  background: #1c1c1c;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.laptop-details h2 {
+  margin-bottom: 15px;
+  color: #00d1b2;
+}
+
+.laptop-details p {
+  margin: 8px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.laptop-details strong {
+  color: #ffc107;
+}

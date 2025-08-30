@@ -4,63 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="static/ecome.css">
+    <link rel="stylesheet" href="{% static 'css/ecome.css' %}">
     <title>Ecome</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
 
   <!-- NavBar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
   <div class="container-fluid">
-    <!-- Left side: Brand -->
     <a class="navbar-brand" href="{% url 'ecome' %}">
-        {% load static %}
+      {% load static %}
       <img src="{% static 'images/ecome.png' %}" alt="Ecome" height="30" class="d-inline-block align-text-top">
     </a>
-
-    <!-- Toggler (mobile view) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-      <!-- Center: Search Bar -->
       <form class="d-flex mx-auto" role="search" style="width: 700px;">
         <input class="form-control me-2" type="search" placeholder="Search ecome..." aria-label="Search"/>
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
-
-      <!-- Right side: Buttons -->
       <div class="d-flex ms-auto">
-        <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+        {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" id="userMenu" 
+              data-bs-toggle="dropdown" aria-expanded="false">Hello,
+              {{ user.username }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Your Products</a></li>
+              <li><a class="dropdown-item" href="#">Your Lists</a></li>
+              <li><a class="dropdown-item" href="#">Your Watchlists</a></li>
+              <li><a class="dropdown-item" href="#">Your Orders</a></li>
+              <li><a class="dropdown-item" href="#">Your Products</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+        {% endif %}
       </div>
     </div>
   </div>
 </nav>
 
-    <h1 id="welcome">Welcome to Ecome</h1>
+<h1 id="welcome">Welcome to Ecome</h1>
 
-    <!-- Loop -->
+    <!--Laptop Loop -->
 
 <div class="container mt-5">
   <div class="row">
-    {% if products %}
+    {% if laptops %}
       <h2 class="text-center mb-4 p-3">Products Listing</h2>
-      {% for product in products %}
-        <div class="col-md-3 mb-3">
+      {% for laptop in laptops %}
+        <div class="col-md-4 mb-4">
           <div class="card card-hover-zoom bg-dark text-white shadow rounded-4 border-0 h-100"
               style="min-height: 500px;">
-            <img src="{{ product.image.url }}" class="card-img-top rounded-top-4"
-                 alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+            <img src="{{ laptop.image.url }}" class="card-img-top rounded-top-4"
+                 alt="{{ laptop.name }}" style="height: 250px; object-fit: cover;">
             <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
-              <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
-              <p class="card-text"><strong>Price:</strong> {{ product.price }}</p>
-              <p class="card-text"><small class="text-light">Posted by: {{ product.user.username }}</small></p>
+              <h5 class="card-title">{{ laptop.name }}</h5>
+              <br>
+              <p class="card-text"><strong>CPU:</strong> {{ laptop.cpu }}</p>
+              <p class="card-text"><strong>RAM:</strong> {{ laptop.ram }}</p>
+              <p class="card-text"><strong>Price:</strong> {{ laptop.price }}</p>
+              <p class="card-text"><small class="text-light">Posted by: {{ laptop.user.username }}</small></p>
+              <a href="{% url 'laptop_detail' laptop.pk %}" class="btn btn-primary mt-2">View Product</a>
             </div>
           </div>
         </div>
@@ -69,6 +83,59 @@
       <p class="text-center">No products available.</p>
     {% endif %}
   </div>
+</div>
+
+<!-- Car Loop -->
+<div class="container mt-5">
+  <h2 class="text-center mt-5 mb-4">Cars</h2>
+  <div class="row">
+    {% for car in cars %}
+      <div class="col-md-4 mb-4">
+        <div class="card bg-dark text-white shadow rounded-4 border-0 h-100">
+          <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.name }}" style="height: 250px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ car.name }}</h5>
+            <p class="card-text">{{ car.model }}</p>
+            <p class="card-text"><strong>Price:</strong> {{ car.price }}</p>
+            <p class="card-text"><strong>Made In:</strong> {{ car.madein }}</p>
+            <p class="card-text"><strong>Engine:</strong> {{ car.engine }}</p>
+            <p class="card-text"><strong>Engine Power:</strong> {{ car.enginepower }}</p>
+            <small class="text-light">Posted by: {{ car.user.username }}</small>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No cars available.</p>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+<!-- Anime Loop -->
+
+<div class="container mt-5">
+  <h2 class="text-center mt-5 mb-4">Animes</h2>
+  <div class="row">
+    {% for anime in animes %}
+      <div class="col-md-4 mb-4">
+        <div class="card bg-dark text-white shadow rounded-4 border-0 h-100">
+          <img src="{{ anime.image.url }}" class="card-img-top" alt="{{ anime.name }}" style="height: 250px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ anime.name }}</h5>
+            <p class="card-text">{{ anime.model }}</p>
+            <p class="card-text"><strong>Price:</strong> {{ anime.price }}</p>
+            <p class="card-text"><strong>Made In:</strong> {{ anime.madein }}</p>
+            <p class="card-text"><strong>Engine:</strong> {{ anime.engine }}</p>
+            <p class="card-text"><strong>Engine Power:</strong> {{ anime.enginepower }}</p>
+            <small class="text-light">Posted by: {{ anime.user.username }}</small>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No animes available.</p>
+    {% endfor %}
+  </div>
+</div>
 </div>
 
 
