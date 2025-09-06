@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import CustomUser   # apna model import karo
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth import logout as django_logout
 
 def register(request):
     if request.method == "POST":
@@ -48,3 +49,10 @@ def user_login(request):
             return redirect("login")
 
     return render(request, "login.html")
+
+def logout(request):
+    raise NotImplementedError
+
+def custom_logout(request):
+    django_logout(request)
+    return redirect("ecome")

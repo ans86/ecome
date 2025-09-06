@@ -1,18 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from products.models import Laptop, Car,Anime
+from product.models import Product
 
 
 def ecome(request):
-    laptops = Laptop.objects.all()
-    cars = Car.objects.all()
-    animes = Anime.objects.all()
-
-    return render(request, "ecome.html", {
-        "laptops": laptops,
-        "cars": cars,
-        "animes": animes,
-    })
+    products = Product.objects.all()
+    context = {
+        "products": products
+    }
+    return render(request, 'ecome.html', context)
 
 def register(request):
     return render(request, 'register.html')

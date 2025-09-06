@@ -9,12 +9,12 @@
   <body>
 
     <!-- NavBar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1D84B5;">
   <div class="container-fluid">
     <!-- Left side: Brand -->
     <a class="navbar-brand" href="{% url 'ecome' %}">
-        {% load static %}
-      <img src="{% static 'images/ecome.png' %}" alt="Ecome" height="30" class="d-inline-block align-text-top">
+        <!-- {% load static %}
+      <img src="{% static 'images/ecome.png' %}" alt="Ecome" height="30" class="d-inline-block align-text-top"> -->
     </a>
 
     <!-- Toggler (mobile view) -->
@@ -27,8 +27,8 @@
 
       <!-- Right side: Buttons -->
       <div class="d-flex ms-auto">
-        <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-warning me-2">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-warning">Register</a>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
           </span>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <button type="submit" class="btn btn-warning w-100">Login</button>
       </form>
     </div>
   </div>
