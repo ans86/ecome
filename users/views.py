@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import CustomUser   # apna model import karo
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User   # apna model import karo
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth import logout as django_logout
 
 def register(request):
     if request.method == "POST":
@@ -15,12 +14,12 @@ def register(request):
             messages.error(request, "Passwords do not match")
             return redirect("register")
 
-        if CustomUser.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken")
             return redirect("register")
 
         # user create
-        user = CustomUser.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password
@@ -50,9 +49,7 @@ def user_login(request):
 
     return render(request, "login.html")
 
-def logout(request):
-    raise NotImplementedError
+def logout_view(request):
+    logout(request)
+    return redirect('ecome')
 
-def custom_logout(request):
-    django_logout(request)
-    return redirect("ecome")

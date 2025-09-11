@@ -45,7 +45,14 @@
           {% endif %}
           <div class="card-body d-flex flex-column">
             <h5 class="card-title mb-1">{{ product.name }}</h5>
-            <p class="card-text text-muted mb-2">Rs. {{ product.price }}</p>
+            <p class="card-text text-muted mb-2">${{ product.price }}</p>
+            <p><strong>Stock:</strong>
+              {% if product.stock > 0 %}
+                <span class="text-success">In Stock ({{ product.stock }})</span>
+              {% else %}
+                <span class="text-danger">Out of Stock</span>
+              {% endif %}
+            </p>
             <p class="card-text"><small class="text-dark">Posted by: {{ product.user.username }}</small></p>
 
             {% if product.slug %}

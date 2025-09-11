@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "product",
 ]
 
-AUTH_USER_MODEL = "users.CustomUser"
 
 
 MIDDLEWARE = [

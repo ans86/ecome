@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+<style>
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+.form-control:focus {
+  border-color: #007bff !important;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3) !important;
+  outline: none;
+}
+.btn-primary:hover {
+  background: linear-gradient(90deg, #0056b3 0%, #007bff 100%) !important;
+  transform: scale(1.05);
+}
+.form-label {
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+</style>
+<div class="card shadow-lg p-4 mx-auto" style="max-width: 650px; border-radius: 15px; background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+  <h2 class="mb-4 fw-bold text-dark" style="font-size: 1.8rem;">Edit Product</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Product Name -->
+    <div class="mb-3">
+      <label for="name" class="form-label fw-bold text-dark">Name:</label>
+      <input type="text" name="name" id="name" class="form-control rounded-pill" required style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;" required value="{{ product.name }}">
+    </div>
+
+    <!-- Image -->
+    <div class="mb-3">
+      <label for="image" class="form-label fw-bold text-dark">Image:</label>
+        Select Image 
+        {% if product.image %}
+          <a href="{{ product.image.url }}" target="_blank"><b>Click to view</b></a>
+        {% endif %}
+      <input type="file" name="image" id="image" class="form-control rounded-pill" style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+    </div>
+
+    <!-- Brand -->
+    <div class="mb-3">
+      <label for="brand" class="form-label fw-bold text-dark">Brand:</label>
+      <input type="text" name="brand" id="brand" value="{{product.brand}}" class="form-control rounded-pill" style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+    </div>
+
+    <!-- Price -->
+    <div class="mb-3">
+      <label for="price" class="form-label fw-bold text-dark">Price:</label>
+      <input type="number" name="price" id="price" class="form-control rounded-pill" required style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;" required value="{{ product.price }}">
+    </div>
+
+    <!-- Discount -->
+    <div class="mb-3">
+      <label for="discount" class="form-label fw-bold text-dark">Discount (%):</label>
+      <input type="number" name="discount" id="discount" class="form-control rounded-pill" min="0" max="100" value="{{ product.discount }}" style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+    </div>
+
+    <!-- Stock -->
+    <div class="mb-3">
+      <label for="stock" class="form-label fw-bold text-dark">Stock:</label>
+      <input type="number" name="stock" id="stock" class="form-control rounded-pill" value="{{ product.stock }}" min="0" style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;" required>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-4">
+      <label for="description" class="form-label fw-bold text-dark">Description:</label>
+      <textarea name="description" id="description" class="form-control rounded-3" rows="4" style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;" required>{{ product.description }}</textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary w-100 fw-bold rounded-pill" style="background: linear-gradient(90deg, #007bff 0%, #0056b3 100%); border: none; padding: 12px; transition: background 0.3s ease, transform 0.2s ease;">Save Product</button>
+  </form>
+</div>
+
+{% endblock %}

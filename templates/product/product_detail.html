@@ -7,36 +7,72 @@
   <!-- Image -->
   <div class="col-md-6 text-center">
     {% if product.image %}
-      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow"
-           style="max-height: 500px; object-fit: contain;">
+      <div class="image-wrapper position-relative rounded shadow-lg overflow-hidden" style="max-height: 500px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+        <img src="{{ product.image.url }}" 
+             alt="{{ product.name }}" 
+             class="img-fluid" 
+             style="max-height: 500px; object-fit: contain; transition: transform 0.5s ease;">
+        <div class="image-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%); transition: background 0.3s ease;"></div>
+      </div>
     {% else %}
-      <div class="bg-light d-flex align-items-center justify-content-center rounded shadow"
-           style="height: 400px;">
-        <span class="text-muted">No Image Available</span>
+      <div class="bg-light d-flex align-items-center justify-content-center rounded shadow-lg" style="height: 400px; transition: box-shadow 0.3s ease;">
+        <span class="text-muted fw-bold">No Image Available</span>
       </div>
     {% endif %}
   </div>
 
   <!-- Details -->
-  <div class="col-md-6">
-    <h2 class="fw-bold">{{ product.name }}</h2>
-    <p class="text-muted">Brand: {{ product.brand }}</p>
-    <hr>
-    <h3 class="text-success">$   {{ product.price }}</h3>
-    <p><strong>Discount:</strong> {{ product.discount }}%</p>
-    <p><strong>Stock:</strong> 
+  <div class="col-md-6 d-flex flex-column p-4" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+    <h2 class="fw-bold mb-3" style="font-size: 2rem; color: #1a1a1a;">{{ product.name }}</h2>
+    <p class="text-muted mb-2" style="font-size: 1.1rem;"><strong>Brand:</strong> {{ product.brand }}</p>
+    <hr style="border-color: rgba(0, 0, 0, 0.1);">
+    <h3 class="text-success mb-3" style="font-size: 1.8rem; font-weight: 700;">$ {{ product.price }}</h3>
+    <p class="mb-2" style="font-size: 1rem;"><strong>Discount:</strong> <span class="badge bg-danger rounded-pill px-3 py-2">{{ product.discount }}%</span></p>
+    <p class="mb-3" style="font-size: 1rem;"><strong>Stock:</strong> 
       {% if product.stock > 0 %}
-        <span class="text-success">In Stock ({{ product.stock }})</span>
+        <span class="text-success fw-bold">In Stock ({{ product.stock }})</span>
       {% else %}
-        <span class="text-danger">Out of Stock</span>
+        <span class="text-danger fw-bold">Out of Stock</span>
       {% endif %}
     </p>
-    <p><strong>Description:</strong><br>{{ product.description|default:"No description available." }}</p>
+    <p class="mb-4" style="font-size: 1rem; line-height: 1.6;"><strong>Description:</strong><br>{{ product.description|default:"No description available." }}</p>
 
-    <div class="mt-4">
-      <a href="#" class="btn btn-warning btn-lg w-10 mb-2"> Add to Cart</a>
-      <a href="#" class="btn btn-danger btn-lg w-10"> Buy Now</a>
+    <div class="mt-auto d-flex gap-3">
+      <a href="#" 
+         class="btn btn-warning text-dark fw-bold rounded-pill flex-grow-1" 
+         style="background: linear-gradient(90deg, #FCFF6C 0%, #FFD700 100%); border: none; padding: 12px 0; transition: background 0.3s ease, transform 0.2s ease;">
+        Add to Cart
+      </a>
+      <a href="#" 
+         class="btn btn-danger fw-bold rounded-pill flex-grow-1" 
+         style="background: linear-gradient(90deg, #dc3545 0%, #c82333 100%); border: none; padding: 12px 0; transition: background 0.3s ease, transform 0.2s ease;">
+        Buy Now
+      </a>
     </div>
   </div>
 </div>
+<style>
+.image-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+.image-wrapper:hover .img-fluid {
+  transform: scale(1.1);
+}
+.image-wrapper:hover .image-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%);
+}
+.bg-light:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+.btn:hover {
+  transform: scale(1.05);
+}
+.btn-warning:hover {
+  background: linear-gradient(90deg, #FFD700 0%, #FCFF6C 100%) !important;
+}
+.btn-danger:hover {
+  background: linear-gradient(90deg, #c82333 0%, #dc3545 100%) !important;
+}
+</style>
 {% endblock %}
