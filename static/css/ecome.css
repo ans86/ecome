@@ -4,14 +4,13 @@
     font-size: 50px;
 }
 
-
-
 /* === Search Bar CSS === */
 .search-bar input,
 .search-btn, 
 .search-btn:before, 
 .search-btn:after {
 	transition: all 0.25s ease-out;
+	color: #fefefe;
 }
 .search-bar input,
 .search-btn {

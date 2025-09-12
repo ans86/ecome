@@ -5,21 +5,72 @@
 {% block content %}
 <div class="row mt-5">
   <!-- Image -->
-  <div class="col-md-6 text-center">
-    {% if product.image %}
-      <div class="image-wrapper position-relative rounded shadow-lg overflow-hidden" style="max-height: 500px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-        <img src="{{ product.image.url }}" 
-             alt="{{ product.name }}" 
-             class="img-fluid" 
-             style="max-height: 500px; object-fit: contain; transition: transform 0.5s ease;">
-        <div class="image-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%); transition: background 0.3s ease;"></div>
+  <div class="col-md-6">
+  <div id="productImagesCarousel" class="carousel slide">
+    <div class="carousel-inner">
+
+      {% if product.image %}
+      <div class="carousel-item active">
+        <img src="{{ product.image.url }}" class="d-block w-100 rounded shadow-sm" style="height:400px; object-fit:cover;" alt="{{ product.name }}">
       </div>
-    {% else %}
-      <div class="bg-light d-flex align-items-center justify-content-center rounded shadow-lg" style="height: 400px; transition: box-shadow 0.3s ease;">
-        <span class="text-muted fw-bold">No Image Available</span>
+      {% endif %}
+
+      {% if product.image1 %}
+      <div class="carousel-item">
+        <img src="{{ product.image1.url }}" class="d-block w-100 rounded shadow-sm" style="height:400px; object-fit:cover;" alt="{{ product.name }} Image 1">
       </div>
-    {% endif %}
+      {% endif %}
+
+      {% if product.image2 %}
+      <div class="carousel-item">
+        <img src="{{ product.image2.url }}" class="d-block w-100 rounded shadow-sm" style="height:400px; object-fit:cover;" alt="{{ product.name }} Image 2">
+      </div>
+      {% endif %}
+
+      {% if product.image3 %}
+      <div class="carousel-item">
+        <img src="{{ product.image3.url }}" class="d-block w-100 rounded shadow-sm" style="height:400px; object-fit:cover;" alt="{{ product.name }} Image 3">
+      </div>
+      {% endif %}
+
+      {% if product.image4 %}
+      <div class="carousel-item">
+        <img src="{{ product.image4.url }}" class="d-block w-100 rounded shadow-sm" style="height:400px; object-fit:cover;" alt="{{ product.name }} Image 4">
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+
+    <!-- Thumbnails Indicators -->
+    <div class="carousel-indicators mt-3 position-static d-flex flex-wrap justify-content-center">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" data-bs-target="#productImagesCarousel" data-bs-slide-to="0" class="active rounded m-1" style="width:80px; height:80px; object-fit:cover; cursor:pointer;">
+      {% endif %}
+      {% if product.image1 %}
+      <img src="{{ product.image1.url }}" data-bs-target="#productImagesCarousel" data-bs-slide-to="1" class="rounded m-1" style="width:80px; height:80px; object-fit:cover; cursor:pointer;">
+      {% endif %}
+      {% if product.image2 %}
+      <img src="{{ product.image2.url }}" data-bs-target="#productImagesCarousel" data-bs-slide-to="2" class="rounded m-1" style="width:80px; height:80px; object-fit:cover; cursor:pointer;">
+      {% endif %}
+      {% if product.image3 %}
+      <img src="{{ product.image3.url }}" data-bs-target="#productImagesCarousel" data-bs-slide-to="3" class="rounded m-1" style="width:80px; height:80px; object-fit:cover; cursor:pointer;">
+      {% endif %}
+      {% if product.image4 %}
+      <img src="{{ product.image4.url }}" data-bs-target="#productImagesCarousel" data-bs-slide-to="4" class="rounded m-1" style="width:80px; height:80px; object-fit:cover; cursor:pointer;">
+      {% endif %}
+    </div>
   </div>
+</div>
+
+       
+ 
 
   <!-- Details -->
   <div class="col-md-6 d-flex flex-column p-4" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
@@ -51,6 +102,40 @@
     </div>
   </div>
 </div>
+
+<!-- Review Loop -->
+<div class="container">
+<div class="container mt-4">
+  <h3 class="mb-3">Reviews</h3>
+  {% for review in reviews %}
+  <div class="review-box mb-3 p-3 rounded shadow-sm">
+    <p class="review-name fw-bold">{{ review.name }}</p>
+    <p class="review-stars text-warning mb-1">
+      {% for i in "12345"|slice:":review.rating"|make_list %}★{% endfor %}
+    </p>
+    <p class="review-comment">{{ review.comment }}</p>
+  </div>
+  {% empty %}
+  <p class="text-muted">No reviews yet.</p>
+  {% endfor %}
+</div>
+
+
+
+ {% if user.is_authenticated %}
+<div class="mt-4">
+  <a href="{% url 'add_review' product.id %}" 
+     class="btn-review">
+    Add Review
+  </a>
+ {% else %}
+    <p class="text-muted mt-3">
+      <a href="{% url 'login' %}">Login</a> to add a review.
+    </p>
+  {% endif %}
+</div>
+
+
 <style>
 .image-wrapper:hover {
   transform: translateY(-5px);
@@ -74,5 +159,52 @@
 .btn-danger:hover {
   background: linear-gradient(90deg, #c82333 0%, #dc3545 100%) !important;
 }
+
+.review-box {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.review-name {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.review-stars {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.review-comment {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.btn-review {
+  display: inline-block;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 25px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-review:hover {
+  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
 </style>
 {% endblock %}

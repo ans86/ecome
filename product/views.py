@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from .models import Product
+from .models import Review
 from django.contrib.auth.decorators import login_required
 
 
@@ -9,8 +10,13 @@ def product_list(request):
     return render(request, "product_list.html", {"product": product})
 
 def product_detail(request, id):
-    product = get_object_or_404(Product,id=id)
-    return render(request, "product/product_detail.html", {"product": product})
+    product = get_object_or_404(Product, id=id)
+    reviews = product.reviews.all()  # 🔹 related_name="reviews" hai Review model me
+    return render(request, "product/product_detail.html", {
+        "product": product,
+        "reviews": reviews
+    })
+ 
 
 
 
@@ -24,7 +30,11 @@ def add_product(request):
             discount=request.POST.get('discount', 0),
             stock=request.POST.get('stock', 0),
             description=request.POST.get('description', ''),
-            image=request.FILES.get('image')
+            image=request.FILES.get('image'),
+            image1=request.FILES.get('image1'),
+            image2=request.FILES.get('image2'),
+            image3=request.FILES.get('image3'),
+            image4=request.FILES.get('image4')
         )
         return redirect('ecome')
 
@@ -37,6 +47,10 @@ def edit_product(request, id):
     if request.method == "POST":
         name = request.POST.get('name')
         image = request.FILES.get('image')
+        image1 = request.FILES.get('image1')
+        image2 = request.FILES.get('image2')
+        image3 = request.FILES.get('image3')
+        image4 = request.FILES.get('image4')
         brand = request.POST.get('brand')
         price = request.POST.get('price')
         discount = request.POST.get('discount')
@@ -58,11 +72,17 @@ def edit_product(request, id):
 
         if image:
             product.image = image
+            product.image1 = image1
+            product.image2 = image2
+            product.image3 = image3
+            product.image4= image4
 
         product.save()
         return redirect('my_list')
 
     return render(request, 'product/edit_product.html', {'product': product})
+
+
 
 @login_required
 def delete_product(request, id):
@@ -74,3 +94,24 @@ def delete_product(request, id):
 def my_list(request):
     products = Product.objects.filter(user=request.user)
     return render(request, "my_list.html", {"products": products})
+
+
+@login_required
+def add_review(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    if request.method == "POST":
+        name = request.POST.get("name", "")  # 🔹 name field get karo
+        comment = request.POST.get("comment", "")
+        rating = request.POST.get("rating", 1)
+
+        Review.objects.create(
+            user=request.user,
+            product=product,
+            name=name,  # 🔹 yaha bhi save karo
+            comment=comment,
+            rating=rating,
+        )
+        return redirect("product_detail", id=id)
+
+    return render(request, "product/add_review.html", {"product": product})
