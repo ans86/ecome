@@ -1,31 +1,149 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">Add Review for {{ product.name }}</h2>
-  <form method="POST">
-    {% csrf_token %}
-  <!-- Name -->
-  <div class="mb-3">
-    <label for="name" class="form-label">Your Name</label>
-    <input type="text" name="name" id="name" class="form-control" required>
-  </div>
+<div class="container my-4">
+  <div class="card shadow-sm mx-auto" style="max-width: 500px; background-color: #2c2f33;">
+    <div class="card-body p-4">
+      <h2 class="card-title mb-4 text-center text-light">Write a Review for {{ product.name }}</h2>
+      
+      <form method="POST" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <!-- Name -->
+        <div class="mb-3">
+          <label for="name" class="form-label fw-semibold text-light">Your Name</label>
+          <input 
+            type="text" 
+            name="name" 
+            id="name" 
+            class="form-control bg-dark text-light border-0" 
+            placeholder="Enter your name" 
+            required 
+            minlength="2"
+          >
+          <div class="invalid-feedback">
+            Please enter a valid name (minimum 2 characters).
+          </div>
+        </div>
 
-    <div class="mb-3">
-      <label for="rating" class="form-label">Rating (1–5):</label>
-      <select name="rating" id="rating" class="form-select" required>
-        <option value="1">⭐</option>
-        <option value="2">⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
-        <option value="5">⭐⭐⭐⭐⭐</option>
-      </select>
+        <!-- Star Rating -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-light">Your Rating</label>
+          <div class="star-rating">
+            <input type="radio" name="rating" id="star5" value="5" required>
+            <label for="star5" title="5 stars">★</label>
+            <input type="radio" name="rating" id="star4" value="4">
+            <label for="star4" title="4 stars">★</label>
+            <input type="radio" name="rating" id="star3" value="3">
+            <label for="star3" title="3 stars">★</label>
+            <input type="radio" name="rating" id="star2" value="2">
+            <label for="star2" title="2 stars">★</label>
+            <input type="radio" name="rating" id="star1" value="1">
+            <label for="star1" title="1 star">★</label>
+          </div>
+          <div class="invalid-feedback rating-error">
+            Please select a rating.
+          </div>
+        </div>
+
+        <!-- Comment -->
+        <div class="mb-3">
+          <label for="comment" class="form-label fw-semibold text-light">Your Review</label>
+          <textarea 
+            name="comment" 
+            id="comment" 
+            rows="3" 
+            class="form-control bg-dark text-light border-0" 
+            placeholder="Share your thoughts..." 
+            style="resize: vertical; height: 169px;"
+          ></textarea>
+          <div class="invalid-feedback">
+            Please enter your review.
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-end gap-2">
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-light btn-sm">Cancel</a>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
+        </div>
+      </form>
     </div>
-    <div class="mb-3">
-      <label for="comment" class="form-label">Comment:</label>
-      <textarea name="comment" id="comment" rows="4" class="form-control" style="height: 228px;"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit Review</button>
-  </form>
+  </div>
 </div>
+
+<!-- Bootstrap form validation and dynamic error handling script -->
+<script>
+  (function () {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+
+    // Hide rating error when a star is selected
+    const ratingInputs = document.querySelectorAll('.star-rating input')
+    const ratingError = document.querySelector('.rating-error')
+    ratingInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (document.querySelector('.star-rating input:checked')) {
+          ratingError.style.display = 'none'
+        }
+      })
+    })
+  })();
+</script>
+
+<style>
+  .card {
+    border-radius: 8px;
+    border: none;
+  }
+  .form-control, .form-select {
+    border-radius: 6px;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 8px 16px;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+  .btn-outline-light {
+    padding: 8px 16px;
+  }
+  .form-label {
+    color: #e0e0e0;
+  }
+  .star-rating {
+    direction: rtl;
+    display: inline-flex;
+    font-size: 1.3rem;
+    color: #666;
+  }
+  .star-rating input {
+    display: none;
+  }
+  .star-rating label {
+    cursor: pointer;
+    margin: 0 2px;
+  }
+  .star-rating input:checked ~ label,
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #f5c518;
+  }
+  .invalid-feedback.rating-error {
+    display: block;
+    color: #dc3545;
+  }
+</style>
 {% endblock %}

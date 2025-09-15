@@ -103,22 +103,57 @@
   </div>
 </div>
 
-<!-- Review Loop -->
-<div class="container">
-<div class="container mt-4">
-  <h3 class="mb-3">Reviews</h3>
+<div class="container my-5">
+  <h3 class="mb-4 fw-bold text-center">Customer Reviews</h3>
+  
   {% for review in reviews %}
-  <div class="review-box mb-3 p-3 rounded shadow-sm">
-    <p class="review-name fw-bold">{{ review.name }}</p>
-    <p class="review-stars text-warning mb-1">
-      {% for i in "12345"|slice:":review.rating"|make_list %}★{% endfor %}
-    </p>
-    <p class="review-comment">{{ review.comment }}</p>
+  <div class="card mb-3 shadow-sm border-0 review-card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="card-title mb-0 fw-semibold">{{ review.name }}</h5>
+        <div class="star-rating text-warning">
+          {% for i in "12345"|make_list %}
+            {% if forloop.counter <= review.rating %}
+              <span class="star">★</span>
+            {% else %}
+              <span class="star text-muted">☆</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <p class="card-text text-muted">{{ review.comment }}</p>
+    </div>
   </div>
   {% empty %}
-  <p class="text-muted">No reviews yet.</p>
+  <div class="text-center text-muted py-4">
+    <p>No reviews yet. Be the first to share your thoughts!</p>
+  </div>
   {% endfor %}
 </div>
+
+<style>
+  .review-card {
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+  }
+  .review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  }
+  .star-rating {
+    font-size: 1.2rem;
+  }
+  .star {
+    margin-right: 2px;
+  }
+  .card-title {
+    color: #333;
+  }
+  .card-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>
 
 
 
@@ -192,6 +227,7 @@
   display: inline-block;
   background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
   color: #fff;
+  margin-bottom: 20px ;
   font-weight: 600;
   padding: 12px 25px;
   border-radius: 30px;
