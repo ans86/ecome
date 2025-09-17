@@ -1,6 +1,8 @@
+from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from .models import Product
+from .models import Bidding, Product
 from .models import Review
+from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 
 
@@ -12,9 +14,12 @@ def product_list(request):
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
     reviews = product.reviews.all()  # 🔹 related_name="reviews" hai Review model me
+    # highest_bid = product.bids.aggregate(Max("bid_amount"))["bid_amount__max"]
+    bids = product.bids.all()  # 🔹 related_name="bidding" hai Bidding model me
     return render(request, "product/product_detail.html", {
         "product": product,
-        "reviews": reviews
+        "reviews": reviews,
+        "bids": bids,
     })
  
 
@@ -115,3 +120,19 @@ def add_review(request, id):
         return redirect("product_detail", id=id)
 
     return render(request, "product/add_review.html", {"product": product})
+
+@login_required
+def add_bid(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    if request.method == "POST":
+        amount = request.POST.get("amount", 0)
+
+        Bidding.objects.create(
+            user=request.user,
+            product=product,
+            amount=amount,
+        )
+        return redirect("product_detail", id=id)
+
+    return render(request, "product/add_bid.html", {"product": product})

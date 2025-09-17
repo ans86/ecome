@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg rounded-4">
+        <div class="card-header bg-primary text-white text-center">
+          <h3>Place Your Bid</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="">
+            {% csrf_token %}
+        
+            <div class="mb-3">
+              <label for="amount" class="form-label">Bid Amount</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="amount" 
+                name="amount" 
+                placeholder="Enter your bid amount" 
+                required>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success">Submit Bid</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
