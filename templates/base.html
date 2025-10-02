@@ -1,198 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% load static %}
   <title>{% block title %}Ecome{% endblock %}</title>
   {% load static %}
-    <link rel="stylesheet" href="{% static 'css/ecome.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <style>
-    /* Tailwind-style colors via custom CSS */
-    .navbar-dark-custom {
-      background-color: #1f2937; /* Tailwind gray-800 */
-    }
-    .navbar-dark-custom .nav-link {
-      color: #d1d5db; /* Tailwind gray-300 */
-    }
-    .navbar-dark-custom .nav-link:hover {
-      color: #fff;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: .375rem;
-    }
-    .search-input {
-      background-color: #374151; /* Tailwind gray-700 */
-      color: #e5e7eb; /* Tailwind gray-200 */
-    }
-    .search-input::placeholder {
-      color: #9ca3af; /* Tailwind gray-400 */
-    }
-
-.search-bar {
-  display: flex;
-  justify-content: center;
-  margin: auto;
-  max-width: 30em;
-  padding: 1.5em;
-}
-
-.search-bar input,
-.search-btn {
-  height: 3em;
-}
-
-.search-bar input {
-  width: 100%;
-  background: #999 !important; /* force grey background */
-  color: #ffffff !important;   /* dark text */
-  border-radius: 0.375em 0 0 0.375em;
-  box-shadow: 0 0 0 0.1em #d9d9d9 inset;
-  padding: 0.75em;
-}
-
-
-
-/* Hover + Active States */
-.search-btn:hover {
-  background: #0c48db;
-}
-.search-btn:active {
-  transform: translateY(1px);
-}
-
-/* Hide the span text (for accessibility) */
-.search-btn span {
-  display: inline-block;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-}
-
-.search-bar {
-  margin: auto;
-  padding: 0.5em; /* was 1.5em, reduced */
-  justify-content: center;
-  max-width: 500px; /* bigger width */
-}
-
-.search-bar input {
-  width: 100%;
-  background: transparent;   /* navbar ke color ka asar lega */
-  color: #fff;               /* text hamesha white rahe */
-  border-radius: 0.375em 0 0 0.375em;
-  border: 1px solid #4b5563; /* halka border (gray-600 style) */
-  padding: 0.75em;
-}
-
-/* Placeholder color */
-.search-bar input::placeholder {
-  color: #9ca3af; /* Tailwind gray-400 */
-}
-
-
-/* .search-bar input::placeholder {
-  color: #999;
-} */
-
-
-/* Future expandable functionality (commented for now)
-.search-bar input {
-  transform: translate(0.5em,0.5em) scale(0.5);
-  transform-origin: 100% 0;
-}
-.search-bar input:focus,
-.search-bar input:valid {
-  transform: scale(1);
-}
-*/
-
-
-    
-  </style>
+  <link rel="icon" type="image/x-icon" href="/images/ecome.png">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  
+  
 </head>
+
 <body>
 
-<!-- Bootstrap Navbar with Tailwind feel -->
-<nav class="navbar navbar-expand-lg navbar-dark-custom shadow">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand" href="{% url 'ecome' %}">
-      <img src="{% static 'images/shope.png' %}" alt="Logo" height="30">
-    </a>
+  <!-- Kimi Navbar -->
 
-    <!-- Toggle for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <!-- Menu -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'ecome' %}">Ecome</a>
-        </li>
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-blur" data-bs-theme="dark">
+    <div class="container-fluid">
+      <!-- 1. Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'ecome' %}">
+        <!-- <img src="{% static 'images/a.jpeg' %}" alt="Shope" height="32"> -->
+      </a>
 
-        {% if user.is_authenticated %}
+      <!-- 2. Mobile toggler -->
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- 3. Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'add_product' %}">Add Product</a>
+            <a class="nav-link px-3" href="{% url 'ecome' %}">Ecome</a>
           </li>
-        {% endif %}
-        
 
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'my_list' %}">My Listing</a>
-        </li>
-        
-      {% endif %}
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link px-3" href="{% url 'add_product' %}">Add Product</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-3" href="{% url 'my_list' %}">My Listing</a>
+          </li>
+          {% endif %}
 
+          <li class="nav-item">
+            <a class="nav-link px-3" href="#about">About</a>
+          </li>
+        </ul>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-      </ul>
+        <!-- 4. Search bar (centred, collapsible) -->
+        <form id="searchForm" class="search-bar mx-auto d-flex flex-grow-1" action="{% url 'search' %}" method="get"
+          style="max-width: 400px">
+          <div class="input-group input-group-sm">
+            <!-- category filter -->
+            <select class="form-select form-select-sm" name="category" aria-label="Category">
+              <option value="selected">All</option>
+              <option value="electronics">Electronics</option>
+              <option value="fashion">Fashion</option>
+              <option value="home">Home</option>
+              <option value="search-alias=alexa-skills">Alexa Skills</option>
+              <option value="search-alias=vehicles">Amazon Autos</option>
+              <option value="search-alias=amazon-devices">Amazon Devices</option>
+              <option value="search-alias=amazonfresh">Amazon Fresh</option>
+              <option value="search-alias=amazon-global-store">Amazon Global Store</option>
+              <option value="search-alias=bazaar">Amazon Haul</option>
+              <option value="search-alias=amazon-one-medical">Amazon One Medical</option>
+              <option value="search-alias=amazon-pharmacy">Amazon Pharmacy</option>
+              <option value="search-alias=warehouse-deals">Amazon Resale</option>
+              <option value="search-alias=appliances">Appliances</option>
+              <option value="search-alias=mobile-apps">Apps &amp; Games</option>
+              <option value="search-alias=arts-crafts">Arts, Crafts &amp; Sewing</option>
+              <option value="search-alias=audible">Audible Books &amp; Originals</option>
+              <option value="search-alias=automotive">Automotive Parts &amp; Accessories</option>
+              <option value="search-alias=baby-products">Baby</option>
+              <option value="search-alias=beauty">Beauty &amp; Personal Care</option>
+              <option value="search-alias=stripbooks">Books</option>
+              <option value="search-alias=bristolfarms">Bristol Farms</option>
+              <option value="search-alias=popular">CDs &amp; Vinyl</option>
+              <option value="search-alias=mobile">Cell Phones &amp; Accessories</option>
+              <option value="search-alias=fashion">Clothing, Shoes &amp; Jewelry</option>
+              <option value="search-alias=fashion-womens">Women's Clothing, Shoes &amp; Jewelry</option>
+              <option value="search-alias=fashion-mens">Men's Clothing, Shoes &amp; Jewelry</option>
+              <option value="search-alias=fashion-girls">Girl's Clothing, Shoes &amp; Jewelry</option>
+              <option value="search-alias=fashion-boys">Boy's Clothing, Shoes &amp; Jewelry</option>
+              <option value="search-alias=fashion-baby">Baby Clothing, Shoes &amp; Jewelry</option>
+              <option value="search-alias=collectibles">Collectibles &amp; Fine Art</option>
+              <option value="search-alias=computers">Computers</option>
+              <option value="search-alias=financial">Credit and Payment Cards</option>
+              <option value="search-alias=digital-music">Digital Music</option>
+              <option value="search-alias=electronics">Electronics</option>
+              <option value="search-alias=lawngarden">Garden &amp; Outdoor</option>
+              <option value="search-alias=gift-cards">Gift Cards</option>
+              <option value="search-alias=grocery">Grocery &amp; Gourmet Food</option>
+              <option value="search-alias=handmade">Handmade</option>
+              <option value="search-alias=hpc">Health, Household &amp; Baby Care</option>
+              <option value="search-alias=local-services">Home &amp; Business Services</option>
+              <option value="search-alias=garden">Home &amp; Kitchen</option>
+              <option value="search-alias=industrial">Industrial &amp; Scientific</option>
+              <option value="search-alias=prime-exclusive">Just for Prime</option>
+              <option value="search-alias=digital-text">Kindle Store</option>
+              <option value="search-alias=fashion-luggage">Luggage &amp; Travel Gear</option>
+              <option value="search-alias=luxury">Luxury Stores</option>
+              <option value="search-alias=magazines">Magazine Subscriptions</option>
+              <option value="search-alias=movies-tv">Movies &amp; TV</option>
+              <option value="search-alias=mi">Musical Instruments</option>
+              <option value="search-alias=office-products">Office Products</option>
+              <option value="search-alias=pets">Pet Supplies</option>
+              <option value="search-alias=luxury-beauty">Premium Beauty</option>
+              <option value="search-alias=instant-video">Prime Video</option>
+              <option value="search-alias=samedaystore">Same-Day Store</option>
+              <option value="search-alias=smart-home">Smart Home</option>
+              <option value="search-alias=software">Software</option>
+              <option value="search-alias=sporting">Sports &amp; Outdoors</option>
+              <option value="search-alias=specialty-aps-sns">Subscribe &amp; Save</option>
+              <option value="search-alias=subscribe-with-amazon">Subscription Boxes</option>
+              <option value="search-alias=tools">Tools &amp; Home Improvement</option>
+              <option value="search-alias=toys-and-games">Toys &amp; Games</option>
+              <option value="search-alias=under-ten-dollars">Under $10</option>
+              <option value="search-alias=videogames">Video Games</option>
+              <option value="search-alias=wholefoods">Whole Foods Market</option>
+            </select>
 
-      <!-- Search Bar (centered) -->
-      <div class="d-flex justify-content-center flex-grow-1">
-        <form action="" class="search-bar" style="max-width: 500px; padding: 0.5em;">
-        <input type="search" name="search" placeholder="Search" pattern=".*\S.*" required>
-          <button class="search-btn" type="submit">
-            <span>Search</span>
-          </button>
+            <input type="search" name="q" class="form-control" placeholder='Search 50 000+ products…'
+              aria-label="Search" required>
+
+            <button class="btn btn-warning" type="submit">
+              
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
         </form>
+
+        <!-- 5. Right area -->
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+          <!-- Cart -->
+          <li class="nav-item mx-2">
+            <a class="nav-link position-relative" href="#" aria-label="Cart">
+              <i class="bi bi-cart3 fs-5"></i>
+              <span id="cartBadge"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+              </span>
+            </a>
+          </li>
+
+          <!-- User -->
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDrop" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{% static 'images/pu.png' %}" alt="avatar" width="32" height="32" class="rounded-circle">
+              <span class="d-none d-lg-inline ms-2">{{ user.first_name|default:user.username }}</span>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Orders</a></li>
+              <li><a class="dropdown-item" href="{% url 'my_list' %}">My Listing</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <form method="post" action="{% url 'logout' %}" class="d-inline">
+                  {% csrf_token %}
+                  <button class="dropdown-item text-danger" type="submit">Logout</button>
+                </form>
+              </li>
+            </ul>
+          </li>
+
+          {% else %}
+          <li class="nav-item mx-1">
+            <a class="btn btn-sm btn-outline-light" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item mx-1">
+            <a class="btn btn-sm btn-warning" href="{% url 'register' %}">Register</a>
+          </li>
+          {% endif %}
+        </ul>
       </div>
 
-      <!-- Profile -->
-      {% if user.is_authenticated %}
-        <div class="dropdown ms-3">
-          <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{% static 'images/pu.png' %}" alt="User" width="32" height="32" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Orders</a></li>
-            <li><a class="dropdown-item" href="{% url 'my_list' %}">My Listing</a></li>
-
-            <li><hr class="dropdown-divider "></li>
-            <li><a class="dropdown-item btn btn-sm btn-danger" href="{% url 'logout' %}">Logout</a></li>
-          </ul>
-        </div>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light ms-3" style="background-color: #FCFF6C; color: #000; border: none;">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-sm btn-primary ms-2" style="background-color: #FCFF6C; color: #000; border: none;">Register</a>
-      {% endif %}
     </div>
+  </nav>
+
+
+  <!-- Content -->
+  <div class="container mt-4">
+    {% block content %}{% endblock %}
   </div>
-</nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-<!-- Content -->
-<div class="container mt-4">
-  {% block content %}{% endblock %}
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

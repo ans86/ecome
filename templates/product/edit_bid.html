@@ -7,19 +7,20 @@
     <div class="col-md-6">
       <div class="card shadow-lg rounded-4">
         <div class="card-header bg-primary text-white text-center">
-          <h3>Place Your Bid</h3>
+          <h3>Edit Your Bid</h3>
         </div>
         <div class="card-body">
           <form method="POST" action="">
             {% csrf_token %}
 
             <div class="mb-3">
-              <label for="amount" class="form-label">Bid Amount</label>
-              <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter your bid amount"
-                required>
+              <label for="amount" class="form-label fw-bold text-dark">Price:</label>
+      <input type="number" name="amount" id="amount" class="form-control rounded-pill" required
+        style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;"
+        required value="{{ bid.amount }}">
             </div>
             <div class="d-grid">
-              <button type="submit" class="btn btn-success">Submit Bid</button>
+              <button type="submit" class="btn btn-success">Edit Bid</button>
             </div>
           </form>
         </div>

@@ -1,0 +1,169 @@
+    :root {
+      --nav-bg: rgba(15, 15, 15, .75);
+      --nav-blur: 12px;
+    }
+
+    .navbar-dark-custom {
+      background: #000 !important
+    }
+
+    /* fallback */
+    .sticky-top.shadow-blur {
+      /* backdrop-filter: blur(var(--nav-blur)); */
+      /* -webkit-backdrop-filter: blur(var(--nav-blur)); */
+      background: var(--nav-bg) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+    }
+
+    /* search bar tweaks */
+    .search-bar .input-group {
+      height: 38px
+    }
+
+
+    .search-bar .form-control,
+    .search-bar .form-select,
+    .search-bar .btn {
+      border-radius: 0;
+      border: 0;
+    }
+
+    .form-select {
+      width: 30px
+    }
+
+    .search-bar .form-control:focus {
+      box-shadow: 0 0 0 .2rem rgba(255, 193, 7, .45);
+    }
+
+    /* cart badge */
+    #cartBadge {
+      font-size: .65rem;
+      padding: .25em .45em
+    }
+
+    /* keyboard hint */
+    @media(min-width:992px) {
+      .search-bar .form-control::after {
+        content: "Press  /  to search";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ccc;
+        font-size: .75rem;
+        pointer-events: none;
+      }
+    }
+
+
+    /* === Search Bar CSS === */
+    .search-bar input,
+    .search-btn,
+    .search-btn:before,
+    .search-btn:after {
+      transition: all 0.25s ease-out;
+      color: #fefefe;
+    }
+
+    .search-bar input,
+    .search-btn {
+      width: 3em;
+      height: 3em;
+    }
+
+    .search-bar input:invalid:not(:focus),
+    .search-btn {
+      cursor: pointer;
+    }
+
+    .search-bar,
+    .search-bar input:focus,
+    .search-bar input:valid {
+      width: 100%;
+    }
+
+    .search-bar input:focus,
+    .search-bar input:not(:focus)+.search-btn:focus {
+      outline: transparent;
+    }
+
+    .search-bar {
+      padding: 0.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 30em;
+      margin: auto;
+    }
+
+    .search-bar input {
+      background: #fff;
+      border-radius: 0.375em 0 0 0.375em;
+      box-shadow: 0 0 0 0.1em #d9d9d9 inset;
+      padding: 0.75em;
+      appearance: none;
+    }
+
+    .search-bar input::-webkit-search-decoration {
+      -webkit-appearance: none;
+    }
+
+    .search-btn {
+      background: #171717;
+      border-radius: 0 0.375em 0.375em 0;
+      padding: 0.75em;
+      position: relative;
+    }
+
+    .search-btn:before,
+    .search-btn:after {
+      content: "";
+      display: block;
+      position: absolute;
+    }
+
+    .search-btn:before {
+      border-radius: 50%;
+      box-shadow: 0 0 0 0.2em #f1f1f1 inset;
+      top: 0.75em;
+      left: 0.75em;
+      width: 1.2em;
+      height: 1.2em;
+    }
+
+    .search-btn:after {
+      background: #f1f1f1;
+      border-radius: 0 0.25em 0.25em 0;
+      top: 51%;
+      left: 51%;
+      width: 0.75em;
+      height: 0.25em;
+      transform: translate(0.2em, 0) rotate(45deg);
+      transform-origin: 0 50%;
+    }
+
+    .search-btn span {
+      display: inline-block;
+      overflow: hidden;
+      width: 1px;
+      height: 1px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      background: transparent;
+      /* navbar ke color ka asar lega */
+      color: #fff;
+      /* text hamesha white rahe */
+      border-radius: 0.375em 0 0 0.375em;
+      border: 1px solid #4b5563;
+      /* halka border (gray-600 style) */
+      padding: 0.75em;
+    }
+
+    /* Placeholder color */
+    .search-bar input::placeholder {
+      color: #9ca3af;
+      /* Tailwind gray-400 */
+    }

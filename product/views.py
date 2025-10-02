@@ -1,9 +1,25 @@
+from pyexpat.errors import messages
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from .models import Bidding, Product
+from .models import Product, Bidding
 from .models import Review
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
+
+
+
+def search(request):
+    query = request.GET.get("q")  # jo search box me type hoga
+    category = request.GET.get("category")  # dropdown me jo select hoga
+    
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(name__icontains=query)  # product ka naam search karega
+    
+  
+
+    return render(request, "product/search_results.html", {"products": products, "query": query})
 
 
 # Create your views here.
@@ -125,6 +141,17 @@ def add_review(request, id):
 def add_bid(request, id):
     product = get_object_or_404(Product, id=id)
 
+    existing_bid = Bidding.objects.filter(user=request.user, product=product).first()  
+    if existing_bid:
+        # User is already bidding, you can update the existing bid
+        existing_bid.amount = request.POST.get("amount", 0)
+        existing_bid.save()
+        return redirect("product_detail", id=id)
+
+    if not product.is_bidding_open:
+        return redirect("product_detail", id=id)
+
+
     if request.method == "POST":
         amount = request.POST.get("amount", 0)
 
@@ -136,3 +163,37 @@ def add_bid(request, id):
         return redirect("product_detail", id=id)
 
     return render(request, "product/add_bid.html", {"product": product})
+
+@login_required
+def edit_bid(request, id):
+    bid = get_object_or_404(Bidding, id=id)
+
+    if request.method == "POST":
+        amount = request.POST.get('amount')
+        bid.amount = amount
+
+        if not amount:
+            return render(request, 'product/edit_bid.html', {
+                'bid': bid, 'error': "Please enter a bid amount."
+            })
+
+        bid.amount = amount
+        bid.save()
+        return redirect("product_detail", id=bid.product.id)
+
+    return render(request, "product/edit_bid.html", {"bid": bid})
+
+
+@login_required
+def close_bid(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    # sirf product owner ko allow karo
+    if request.user != product.user:
+        # messages.error(request, "You cannot close bidding for this product.")
+        return redirect("product_detail", id=product.id)
+
+    product.is_bidding_open = False
+    product.save()
+    # messages.success(request, "Bidding closed for this product.")
+    return redirect("product_detail", id=product.id)

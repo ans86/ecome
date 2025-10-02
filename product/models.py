@@ -18,6 +18,7 @@ class Product(models.Model):
     discount = models.IntegerField(("Discount"))
     stock = models.PositiveIntegerField(default=0)
     description = models.TextField(("Description"))
+    is_bidding_open = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.name}"
