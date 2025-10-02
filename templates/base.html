@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="icon" type="image/x-icon" href="/images/ecome.png">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  
-  
+
+
 </head>
 
 <body>
@@ -45,6 +45,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link px-3" href="{% url 'my_list' %}">My Listing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-3" href="{% url 'liked_products'  %}">Liked Products</a>
           </li>
           {% endif %}
 
@@ -130,7 +133,7 @@
               aria-label="Search" required>
 
             <button class="btn btn-warning" type="submit">
-              
+
               <i class="bi bi-search"></i>
             </button>
           </div>

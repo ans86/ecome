@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from .models import Product, Bidding
+from .models import Product, Bidding, Like
 from .models import Review
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
@@ -190,10 +190,24 @@ def close_bid(request, id):
 
     # sirf product owner ko allow karo
     if request.user != product.user:
-        # messages.error(request, "You cannot close bidding for this product.")
         return redirect("product_detail", id=product.id)
 
     product.is_bidding_open = False
     product.save()
     # messages.success(request, "Bidding closed for this product.")
     return redirect("product_detail", id=product.id)
+
+
+@login_required
+def add_like(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    Like.objects.get_or_create(user=request.user, product=product)
+    return redirect('product_detail', id=product.id)
+
+
+
+@login_required
+def liked_products(request):
+    likes = Like.objects.filter(user=request.user).select_related('product')
+    return render(request, "product/liked_product.html", {"likes": likes})
+

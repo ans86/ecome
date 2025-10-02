@@ -4,7 +4,9 @@ from . import views
 urlpatterns = [
     path("product", views.product_list, name="product_list"),
     path("search/", views.search, name="search"),
-    path("product/<int:id>/", views.product_detail, name="product_detail"),
+    # urls.py
+path("product/<int:id>/", views.product_detail, name="product_detail"),
+
     path('add/', views.add_product, name='add_product'),
     path("product/<int:id>/review/", views.add_review, name="add_review"),
     path('edit/<int:id>/', views.edit_product, name='edit_product'),
@@ -12,8 +14,9 @@ urlpatterns = [
     path('my_list/', views.my_list, name='my_list'),
     path('product/<int:id>/bid/', views.add_bid, name='add_bid'),
     path('product/<int:id>/edit-bid/', views.edit_bid, name='edit_bid'),
-    path("products/<int:id>/close-bid/", views.close_bid, name="close_bid"),
+    path('products/<int:id>/close-bid/', views.close_bid, name='close_bid'),
+    path("like/<int:product_id>/", views.add_like, name="add_like"),
+    path("liked_products/", views.liked_products, name="liked_products"),
 
-    
 
 ]
