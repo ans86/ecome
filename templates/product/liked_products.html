@@ -48,20 +48,7 @@
             <span class="text-danger">Out of Stock</span>
             {% endif %}
           </p>
-          <div class="d-flex gap-2">
-            <a href="{% url 'product_detail' product.id %}"
-              class="btn btn-warning text-dark fw-bold rounded-pill flex-grow-1">
-              View Details
-            </a>
-            <a href="{% url 'edit_product' product.id %}"
-              class="btn btn-outline-primary fw-bold rounded-pill flex-grow-1">
-              Edit
-            </a>
-            <a href="{% url 'delete_product' product.id %}"
-              class="btn btn-outline-danger fw-bold rounded-pill flex-grow-1">
-              Delete
-            </a>
-          </div>
+          
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ path("product/<int:id>/", views.product_detail, name="product_detail"),
     path('product/<int:id>/edit-bid/', views.edit_bid, name='edit_bid'),
     path('products/<int:id>/close-bid/', views.close_bid, name='close_bid'),
     path("like/<int:product_id>/", views.add_like, name="add_like"),
+    path('unlike/<int:product_id>/', views.unlike_product, name='unlike_product'),
     path("liked_products/", views.liked_products, name="liked_products"),
 
 

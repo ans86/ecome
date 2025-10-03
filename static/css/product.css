@@ -1,0 +1,102 @@
+  .image-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .image-wrapper:hover .img-fluid {
+    transform: scale(1.1);
+  }
+
+  .image-wrapper:hover .image-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 50%);
+  }
+
+  .bg-light:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .btn:hover {
+    transform: scale(1.05);
+  }
+
+  .btn-warning:hover {
+    background: linear-gradient(90deg, #FFD700 0%, #FCFF6C 100%) !important;
+  }
+
+  .btn-danger:hover {
+    background: linear-gradient(90deg, #c82333 0%, #dc3545 100%) !important;
+  }
+
+  .review-box {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .review-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .review-name {
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .review-stars {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  .review-comment {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .btn-review {
+    display: inline-block;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-review:hover {
+    background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .review-card {
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .star-rating {
+    font-size: 1.2rem;
+  }
+
+  .star {
+    margin-right: 2px;
+  }
+
+  .card-title {
+    color: #333;
+  }
+
+  .card-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }

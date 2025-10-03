@@ -27,17 +27,23 @@ def product_list(request):
     product = Product.objects.all()
     return render(request, "product_list.html", {"product": product})
 
+
+@login_required
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
-    reviews = product.reviews.all()  # 🔹 related_name="reviews" hai Review model me
-    # highest_bid = product.bids.aggregate(Max("bid_amount"))["bid_amount__max"]
-    bids = product.bids.all()  # 🔹 related_name="bidding" hai Bidding model me
+    reviews = product.reviews.all()  
+    bids = product.bids.all()  
+
+    # Check if current user already liked this product
+    liked = Like.objects.filter(user=request.user, product=product).exists()
+
     return render(request, "product/product_detail.html", {
         "product": product,
         "reviews": reviews,
         "bids": bids,
+        "liked": liked,   # 👈 yeh extra context bhej rahe hain
     })
- 
+
 
 
 
@@ -209,5 +215,13 @@ def add_like(request, product_id):
 @login_required
 def liked_products(request):
     likes = Like.objects.filter(user=request.user).select_related('product')
-    return render(request, "product/liked_product.html", {"likes": likes})
+    return render(request, "product/liked_products.html", {"likes": likes})
 
+
+@login_required
+def unlike_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    like = Like.objects.filter(user=request.user, product=product).first()
+    if like:
+        like.delete()
+    return redirect('liked_products')  # apne liked products page pe wapas bhej do
