@@ -1,13 +1,28 @@
 {% extends "base.html" %}
-
 {% block title %}Add Product{% endblock %}
 
 {% block content %}
 <div class="card shadow-lg p-4 mx-auto"
   style="max-width: 650px; border-radius: 15px; background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%); transition: transform 0.3s ease, box-shadow 0.3s ease;">
   <h2 class="mb-4 fw-bold text-dark" style="font-size: 1.8rem;">Add Product</h2>
+
+  <!-- ✅ Move the form tag ABOVE the category select -->
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+
+    <!-- ✅ Category Dropdown -->
+    <div class="mb-3">
+      <label for="category" class="form-label fw-bold text-dark">Category:</label>
+      <select name="category" id="category" class="form-select rounded-pill" required
+        style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+        <option value="">Select a category</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+
 
     <!-- Product Name -->
     <div class="mb-3">

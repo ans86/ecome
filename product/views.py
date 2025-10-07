@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from .models import Product, Bidding, Like
+from .models import Product, Bidding, Like, Category
 from .models import Review
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
@@ -16,10 +16,18 @@ def search(request):
 
     if query:
         products = products.filter(name__icontains=query)  # product ka naam search karega
-    
-  
+        return render(request, "product/search_results.html", {"products": products, "query": query})
 
-    return render(request, "product/search_results.html", {"products": products, "query": query})
+
+
+def category_products(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category)
+    return render(request, 'product/category_products.html', {
+        'category': category,
+        'products': products
+    })
+
 
 
 # Create your views here.
@@ -48,7 +56,12 @@ def product_detail(request, id):
 
 
 def add_product(request):
+    categories = Category.objects.all()
+    
     if request.method == "POST":
+        category_id = request.POST.get('category')
+        category = Category.objects.get(id=category_id)
+
         Product.objects.create(
             user=request.user,
             name=request.POST['name'],
@@ -61,11 +74,14 @@ def add_product(request):
             image1=request.FILES.get('image1'),
             image2=request.FILES.get('image2'),
             image3=request.FILES.get('image3'),
-            image4=request.FILES.get('image4')
+            image4=request.FILES.get('image4'),
+            category=category  # ✅ save the relationship
         )
         return redirect('ecome')
 
-    return render(request, "product/add_product.html")
+    return render(request, "product/add_product.html", {'categories': categories})
+
+
 
 @login_required
 def edit_product(request, id):
