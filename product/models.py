@@ -11,7 +11,6 @@ class Category(models.Model):
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-
     name = models.CharField("Name", max_length=100)
     image = models.ImageField("Image", upload_to='product_images/')
     image1 = models.ImageField(upload_to='product_images/', null=True, blank=True)
@@ -24,6 +23,9 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     description = models.TextField("Description")
     is_bidding_open = models.BooleanField(default=True)
+
+    # 👑 Winner field add ki
+    winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="won_bids")
 
     def __str__(self):
         return self.name

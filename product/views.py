@@ -9,13 +9,13 @@ from django.contrib.auth.decorators import login_required
 
 
 def search(request):
-    query = request.GET.get("q")  # jo search box me type hoga
-    category = request.GET.get("category")  # dropdown me jo select hoga
+    query = request.GET.get("q")
+    category = request.GET.get("category")
     
     products = Product.objects.all()
 
     if query:
-        products = products.filter(name__icontains=query)  # product ka naam search karega
+        products = products.filter(name__icontains=query)
         return render(request, "product/search_results.html", {"products": products, "query": query})
 
 
@@ -29,29 +29,25 @@ def category_products(request, category_id):
     })
 
 
-
-# Create your views here.
 def product_list(request):
     product = Product.objects.all()
     return render(request, "product_list.html", {"product": product})
 
 
-@login_required
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
-    reviews = product.reviews.all()  
-    bids = product.bids.all()  
-
-    # Check if current user already liked this product
+    highest_bid = product.bids.aggregate(Max("amount"))["amount__max"]
+    reviews = product.reviews.all()
+    bids = product.bids.all().order_by('-amount')
     liked = Like.objects.filter(user=request.user, product=product).exists()
 
     return render(request, "product/product_detail.html", {
         "product": product,
         "reviews": reviews,
         "bids": bids,
-        "liked": liked,   # 👈 yeh extra context bhej rahe hain
+        "liked": liked,
+        "highest_bid": highest_bid,
     })
-
 
 
 
@@ -75,7 +71,7 @@ def add_product(request):
             image2=request.FILES.get('image2'),
             image3=request.FILES.get('image3'),
             image4=request.FILES.get('image4'),
-            category=category  # ✅ save the relationship
+            category=category
         )
         return redirect('ecome')
 
@@ -144,14 +140,14 @@ def add_review(request, id):
     product = get_object_or_404(Product, id=id)
 
     if request.method == "POST":
-        name = request.POST.get("name", "")  # 🔹 name field get karo
+        name = request.POST.get("name", "")
         comment = request.POST.get("comment", "")
         rating = request.POST.get("rating", 1)
 
         Review.objects.create(
             user=request.user,
             product=product,
-            name=name,  # 🔹 yaha bhi save karo
+            name=name,
             comment=comment,
             rating=rating,
         )
@@ -165,7 +161,6 @@ def add_bid(request, id):
 
     existing_bid = Bidding.objects.filter(user=request.user, product=product).first()  
     if existing_bid:
-        # User is already bidding, you can update the existing bid
         existing_bid.amount = request.POST.get("amount", 0)
         existing_bid.save()
         return redirect("product_detail", id=id)
@@ -185,6 +180,30 @@ def add_bid(request, id):
         return redirect("product_detail", id=id)
 
     return render(request, "product/add_bid.html", {"product": product})
+
+
+# @login_required
+# def add_bid(request, id):
+#     product = get_object_or_404(Product, id=id)
+#     if request.method == "POST":
+#         amount = request.POST.get('amount')
+#         Bidding.objects.create(product=product, user=request.user, amount=amount)
+#         return redirect('product_detail', id=id)
+#     return redirect('product_detail', id=id)
+
+# @login_required
+# def add_review(request, id):
+#     product = get_object_or_404(Product, id=id)
+#     if request.method == "POST":
+#         comment = request.POST.get('comment')
+#         rating = request.POST.get('rating')
+#         Review.objects.create(product=product, user=request.user, comment=comment, rating=rating)
+#         return redirect('product_detail', id=id)
+#     return redirect('product_detail', id=id)
+
+
+
+
 
 @login_required
 def edit_bid(request, id):
@@ -209,14 +228,14 @@ def edit_bid(request, id):
 @login_required
 def close_bid(request, id):
     product = get_object_or_404(Product, id=id)
-
-    # sirf product owner ko allow karo
     if request.user != product.user:
         return redirect("product_detail", id=product.id)
-
     product.is_bidding_open = False
+    highest_bid = Bidding.objects.filter(product=product).order_by('-amount').first()
+    if highest_bid:
+        product.winner = highest_bid.user
     product.save()
-    # messages.success(request, "Bidding closed for this product.")
+
     return redirect("product_detail", id=product.id)
 
 
@@ -224,7 +243,7 @@ def close_bid(request, id):
 def add_like(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     Like.objects.get_or_create(user=request.user, product=product)
-    return redirect('product_detail', id=product.id)
+    return redirect('liked_products')
 
 
 
@@ -240,4 +259,4 @@ def unlike_product(request, product_id):
     like = Like.objects.filter(user=request.user, product=product).first()
     if like:
         like.delete()
-    return redirect('liked_products')  # apne liked products page pe wapas bhej do
+    return redirect('liked_products')

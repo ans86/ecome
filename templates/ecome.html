@@ -5,19 +5,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% load static %}
-<!-- <link rel="stylesheet" href="{% static 'css/ecome.css' %}"> -->
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 <title>Ecome</title>
 
 
 <!-- Loop -->
-<div class="container mt-5">
+<div class="container mt-5   ">
   <h2 class="text-center mb-4 p-3 ">
     <b><b>Products Listing</b></b>
   </h2>
-  <div class="row">
+  <div class="row g-4">
     {% for product in products %}
-    <div class="col-md-3 mb-4">
-      <div class="card shadow-lg border-0 rounded-4 h-100 overflow-hidden product-card"
+    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+      <div class="card shadow-lg  h-100 overflow-hidden product-card"
         style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
         <!-- Image with hover zoom and gradient overlay -->
         <a href="{% url 'product_detail' product.id %}" class="position-relative d-block">
@@ -45,23 +45,26 @@
             <p class="mb-2">
               <span class="text-success fw-bold" style="font-size: 1.1rem;">$ {{ product.price }}</span>
             </p>
-            <p class="mb-3"><strong>Stock:</strong>
+            <p class="mb-3"><strong>In Stock:</strong>
               {% if product.stock > 0 %}
-              <span class="text-success">In Stock ({{ product.stock }})</span>
+              <span class="text-success">({{ product.stock }})</span>
               {% else %}
               <span class="text-danger">Out of Stock</span>
               {% endif %}
             </p>
             <div class="d-grid gap-2">
-              <a href="{% url 'product_detail' product.id %}" class="btn btn-warning text-dark fw-bold rounded-pill"
+              {% comment %} <a href="{% url 'product_detail' product.id %}" class="btn btn-warning text-dark fw-bold rounded-pill"
                 style="background: linear-gradient(90deg, #FCFF6C 0%, #FFD700 100%); color: #000; border: none; transition: background 0.3s ease, transform 0.2s ease;">
-                View Details
-              </a>
+                View Detail
+              </a> {% endcomment %}
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+
     <style>
       .product-card:hover {
         transform: translateY(-5px);

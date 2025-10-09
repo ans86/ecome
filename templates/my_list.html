@@ -9,7 +9,7 @@
 <div class="row">
   {% for product in products %}
   <div class="col-md-3 mb-4">
-    <div class="card shadow-lg border-0 rounded-4 h-100 overflow-hidden product-card"
+    <div class="card shadow-lg  h-100 overflow-hidden product-card"
       style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
       <!-- Image with hover zoom and gradient overlay -->
       <a href="{% url 'product_detail' product.id %}" class="position-relative d-block">
@@ -37,19 +37,19 @@
           <p class="mb-2">
             <span class="text-success fw-bold" style="font-size: 1.1rem;">$ {{ product.price }}</span>
           </p>
-          <p class="mb-3"><strong>Stock:</strong>
+          <p class="mb-3"><strong>In Stock:</strong>
             {% if product.stock > 0 %}
-            <span class="text-success">In Stock ({{ product.stock }})</span>
+            <span class="text-success">({{ product.stock }})</span>
             {% else %}
             <span class="text-danger">Out of Stock</span>
             {% endif %}
           </p>
           <div class="d-flex gap-2">
-            <a href="{% url 'product_detail' product.id %}"
+            {% comment %} <a href="{% url 'product_detail' product.id %}"
               class="btn btn-warning text-dark fw-bold rounded-pill flex-grow-1"
               style="background: linear-gradient(90deg, #FCFF6C 0%, #FFD700 100%); border: none; padding: 10px; transition: background 0.3s ease, transform 0.2s ease;">
               View Details
-            </a>
+            </a> {% endcomment %}
             <a href="{% url 'edit_product' product.id %}"
               class="btn btn-outline-primary fw-bold rounded-pill flex-grow-1"
               style="border: 2px solid #007bff; color: #007bff; padding: 10px; transition: background 0.3s ease, transform 0.2s ease;">
