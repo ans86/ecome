@@ -20,7 +20,7 @@
       <div class="card shadow-lg  h-100 overflow-hidden product-card"
         style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
         <!-- Image with hover zoom and gradient overlay -->
-        <a href="{% url 'product_detail' product.id %}" class="position-relative d-block">
+        <a href="{% url 'product_detail' product.slug %}" class="position-relative d-block">
           <div class="image-container" style="position: relative; overflow: hidden; height: 250px;">
             <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}"
               style="height: 100%; width: 100%; object-fit: cover; transition: transform 0.5s ease;">

@@ -20,8 +20,8 @@ def search(request):
 
 
 
-def category_products(request, category_id):
-    category = get_object_or_404(Category, id=category_id)
+def category_products(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category)
     return render(request, 'product/category_products.html', {
         'category': category,
@@ -34,8 +34,8 @@ def product_list(request):
     return render(request, "product_list.html", {"product": product})
 
 
-def product_detail(request, id):
-    product = get_object_or_404(Product, id=id)
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
     highest_bid = product.bids.aggregate(Max("amount"))["amount__max"]
     reviews = product.reviews.all()
     bids = product.bids.all().order_by('-amount')
@@ -55,8 +55,8 @@ def add_product(request):
     categories = Category.objects.all()
     
     if request.method == "POST":
-        category_id = request.POST.get('category')
-        category = Category.objects.get(id=category_id)
+        category_slug = request.POST.get('category')
+        category = Category.objects.get(slug=category_slug)
 
         Product.objects.create(
             user=request.user,
@@ -80,8 +80,8 @@ def add_product(request):
 
 
 @login_required
-def edit_product(request, id):
-    product = get_object_or_404(Product, id=id)
+def edit_product(request, slug):
+    product = get_object_or_404(Product, slug=slug)
 
     if request.method == "POST":
         name = request.POST.get('name')
@@ -136,8 +136,8 @@ def my_list(request):
 
 
 @login_required
-def add_review(request, id):
-    product = get_object_or_404(Product, id=id)
+def add_review(request, slug):
+    product = get_object_or_404(Product, slug=slug)
 
     if request.method == "POST":
         name = request.POST.get("name", "")
@@ -151,22 +151,22 @@ def add_review(request, id):
             comment=comment,
             rating=rating,
         )
-        return redirect("product_detail", id=id)
+        return redirect("product_detail", slug=slug)
 
     return render(request, "product/add_review.html", {"product": product})
 
 @login_required
-def add_bid(request, id):
-    product = get_object_or_404(Product, id=id)
+def add_bid(request, slug):
+    product = get_object_or_404(Product, slug=slug)
 
     existing_bid = Bidding.objects.filter(user=request.user, product=product).first()  
     if existing_bid:
         existing_bid.amount = request.POST.get("amount", 0)
         existing_bid.save()
-        return redirect("product_detail", id=id)
+        return redirect("product_detail", slug=slug)
 
     if not product.is_bidding_open:
-        return redirect("product_detail", id=id)
+        return redirect("product_detail", slug=slug)
 
 
     if request.method == "POST":
@@ -177,7 +177,7 @@ def add_bid(request, id):
             product=product,
             amount=amount,
         )
-        return redirect("product_detail", id=id)
+        return redirect("product_detail", slug=slug)
 
     return render(request, "product/add_bid.html", {"product": product})
 
@@ -220,7 +220,7 @@ def edit_bid(request, id):
 
         bid.amount = amount
         bid.save()
-        return redirect("product_detail", id=bid.product.id)
+        return redirect("product_detail", slug=bid.product.slug)
 
     return render(request, "product/edit_bid.html", {"bid": bid})
 
@@ -240,8 +240,8 @@ def close_bid(request, id):
 
 
 @login_required
-def add_like(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+def add_like(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
     Like.objects.get_or_create(user=request.user, product=product)
     return redirect('liked_products')
 
@@ -254,9 +254,9 @@ def liked_products(request):
 
 
 @login_required
-def unlike_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+def unlike_product(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
     like = Like.objects.filter(user=request.user, product=product).first()
     if like:
         like.delete()
-    return redirect('liked_products')
+    return redirect('ecome')

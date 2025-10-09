@@ -13,11 +13,11 @@
     <!-- ✅ Category Dropdown -->
     <div class="mb-3">
       <label for="category" class="form-label fw-bold text-dark">Category:</label>
-      <select name="category" id="category" class="form-select rounded-pill" required
+      <select name="category" id="category" class="form-select w-50 rounded-pill" required
         style="border: 1px solid #ced4da; padding: 10px; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
         <option value="">Select a category</option>
         {% for category in categories %}
-        <option value="{{ category.id }}">{{ category.name }}</option>
+        <option value="{{ category.slug }}">{{ category.name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -98,7 +98,7 @@
 
     <!-- Submit -->
     <button type="submit" class="btn btn-primary w-100 fw-bold rounded-pill"
-      style="background: linear-gradient(90deg, #f8ec0eff 0%, #fae41eff 100%); border: none; padding: 12px; transition: background 0.3s ease, transform 0.2s ease;">Add
+      style="background: linear-gradient(90deg, #ffff66 0%, #ffff66 100%); border: none; padding: 12px; transition: background 0.3s ease, transform 0.2s ease;">Add
       Product</button>
   </form>
 </div>

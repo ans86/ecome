@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ product.name }} - Ecome{% endblock %}
+{% block title %}Ecome - {{ product.name }}{% endblock %}
 
 {% block content %}
 <!-- ========== BOOTSTRAP CDN ========== -->
@@ -107,16 +107,16 @@
       </p>
 
       <div class="mt-auto d-flex gap-3 flex-wrap">
-        <a href="#" class="btn btn-warning text-dark fw-bold flex-grow-1 rounded-pill">Add to Cart</a>
-        <a href="#" class="btn btn-danger fw-bold flex-grow-1 rounded-pill">Buy Now</a>
+        <a href="#" class="btn text-dark fw-bold flex-grow-1"style="background: #FFA500;" >Add to Cart</a>
+        <a href="#" class="btn  fw-bold flex-grow-1" style="background: #e74545ff;">Buy Now</a>
 
         {% if user.is_authenticated %}
           {% if liked %}
-          <a href="{% url 'unlike_product' product.id %}" class="btn btn-outline-danger rounded-pill">Dislike</a>
+          <a href="{% url 'unlike_product' product.slug %}" class="btn" style="background: #f96161;">Dislike</a>
           {% else %}
-          <form action="{% url 'add_like' product.id %}" method="post">
+          <form action="{% url 'add_like' product.slug %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success rounded-pill">Like</button>
+            <button type="submit" class="btn" style="background: #aaff77;">Like</button>
           </form>
           {% endif %}
         {% endif %}
@@ -140,7 +140,7 @@
 
       {% if request.user == product.user and product.is_bidding_open %}
       <div class="text-end mb-3">
-        <a href="{% url 'close_bid' product.id %}" class="btn btn-danger">Close Bid</a>
+        <a href="{% url 'close_bid' product.slug %}" class="btn btn-danger">Close Bid</a>
       </div>
       {% endif %}
 
@@ -171,7 +171,7 @@
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="fw-bold m-0">Customer Reviews</h5>
         {% if user.is_authenticated %}
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">Add Review</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#reviewModal">Add Review</button>
         {% else %}
         <a href="{% url 'login' %}" class="btn btn-primary">Login to Review</a>
         {% endif %}
@@ -190,7 +190,7 @@
         </div>
       </div>
       {% empty %}
-      <p class="text-center text-muted btn btn-success">No reviews yet.</p>
+      <p class="text-center text-muted">No reviews yet.</p>
       {% endfor %}
     </div>
   </div>
@@ -198,20 +198,20 @@
 
 <!-- ==================== BID MODAL ==================== -->
 <div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content shadow-lg">
-      <div class="modal-header">
+  <div class="modal-dialog modal-dialog-centered">  <!-- Center Modal -->
+    <div class="modal-content shadow-lg border-0">
+      <div class="modal-header bg-dark text-light">
         <h5 class="modal-title" id="bidModalLabel">Place Your Bid</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
-        <form method="POST" action="{% url 'add_bid' product.id %}">
+      <div class="modal-body bg-dark"  style="background-color: #2c2f33;">
+        <form method="POST" action="{% url 'add_bid' product.slug %}">
           {% csrf_token %}
           <div class="mb-3">
-            <label class="form-label">Your Bid Amount</label>
+            <label class="form-label fw-semibold">Your Bid Amount</label>
             <input type="number" name="amount" class="form-control" placeholder="Enter amount" required>
           </div>
-          <button type="submit" class="btn btn-success w-100">Submit Bid</button>
+          <button type="submit" class="btn btn-outline-success w-100 ">Submit Bid</button>
         </form>
       </div>
     </div>
@@ -220,33 +220,113 @@
 
 <!-- ==================== REVIEW MODAL ==================== -->
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content shadow-lg">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reviewModalLabel">Add Review</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 " style="background-color: #2c2f33;">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-light fw-bold" id="reviewModalLabel">
+          Write a Review for {{ product.name }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{% url 'add_review' product.id %}">
+        <form method="POST" class="needs-validation" novalidate action="{% url 'add_review' product.slug %}">
           {% csrf_token %}
+
+          <!-- Star Rating -->
           <div class="mb-3">
-            <label class="form-label">Your Comment</label>
-            <textarea name="comment" class="form-control" required></textarea>
+            <label class="form-label fw-semibold text-light">Your Rating</label>
+            <div class="star-rating">
+              <input type="radio" name="rating" id="star5" value="5" required>
+              <label for="star5" title="5 stars">★</label>
+              <input type="radio" name="rating" id="star4" value="4">
+              <label for="star4" title="4 stars">★</label>
+              <input type="radio" name="rating" id="star3" value="3">
+              <label for="star3" title="3 stars">★</label>
+              <input type="radio" name="rating" id="star2" value="2">
+              <label for="star2" title="2 stars">★</label>
+              <input type="radio" name="rating" id="star1" value="1">
+              <label for="star1" title="1 star">★</label>
+            </div>
+            <div class="invalid-feedback rating-error">
+              Please select a rating.
+            </div>
           </div>
+
+          <!-- Comment -->
           <div class="mb-3">
-            <label class="form-label">Rating</label>
-            <select name="rating" class="form-select" required>
-              <option value="5">★★★★★ (5)</option>
-              <option value="4">★★★★☆ (4)</option>
-              <option value="3">★★★☆☆ (3)</option>
-              <option value="2">★★☆☆☆ (2)</option>
-              <option value="1">★☆☆☆☆ (1)</option>
-            </select>
+            <label for="comment" class="form-label fw-semibold text-light">Your Review</label>
+            <textarea name="comment" id="comment" rows="3" class="form-control bg-dark text-light border-0" placeholder="Share your thoughts..." style="resize: vertical; height: 298px;" required=""></textarea>
+            <div class="invalid-feedback">
+              Please enter your review.
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+
+          <!-- Buttons -->
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-outline-primary btn-sm">Submit Review</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ==================== SCRIPT ==================== -->
+<script>
+  (function () {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+
+    // Hide rating error when star is selected
+    const ratingInputs = document.querySelectorAll('.star-rating input')
+    const ratingError = document.querySelector('.rating-error')
+    ratingInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (document.querySelector('.star-rating input:checked')) {
+          ratingError.style.display = 'none'
+        }
+      })
+    })
+  })();
+</script>
+
+<!-- ==================== STYLES ==================== -->
+<style>
+  .star-rating {
+    direction: rtl;
+    display: inline-flex;
+    font-size: 1.5rem;
+    color: #666;
+  }
+  .star-rating input { display: none; }
+  .star-rating label {
+    cursor: pointer;
+    margin: 0 2px;
+  }
+  .star-rating input:checked ~ label,
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #f5c518;
+  }
+  .invalid-feedback.rating-error {
+    display: block;
+    color: #dc3545;
+  }
+  .modal-content {
+    border-radius: 12px;
+  }
+</style>
+
+
+
 {% endblock %}
