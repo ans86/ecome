@@ -26,6 +26,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
     path('check/', views.check, name='check'),
+    # path('counter/', views.counter, name='counter'),
     # Apps URLS
     path('users/', include('users.urls')),
     path('', include('product.urls')),

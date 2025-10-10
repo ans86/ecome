@@ -19,3 +19,12 @@ def login(request):
 
 def check(request):
     return render(request, 'check.html')
+
+# While Loop
+# def counter(request):
+#     numbers = []
+#     count = 0
+#     while count < 5:
+#         numbers.append(count)
+#         count += 1
+#     return render(request, "counter.html", {"numbers": numbers})

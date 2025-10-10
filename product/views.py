@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from .models import Product, Bidding, Like, Category
+from .models import Product, Bidding, Like, Category, Cart
 from .models import Review
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
@@ -39,13 +39,20 @@ def product_detail(request, slug):
     highest_bid = product.bids.aggregate(Max("amount"))["amount__max"]
     reviews = product.reviews.all()
     bids = product.bids.all().order_by('-amount')
-    liked = Like.objects.filter(user=request.user, product=product).exists()
+
+    liked = False
+    in_cart = False
+
+    if request.user.is_authenticated:
+        liked = Like.objects.filter(user=request.user, product=product).exists()
+        in_cart = Cart.objects.filter(user=request.user, product=product).exists()
 
     return render(request, "product/product_detail.html", {
         "product": product,
         "reviews": reviews,
         "bids": bids,
         "liked": liked,
+        "in_cart": in_cart,
         "highest_bid": highest_bid,
     })
 
@@ -124,8 +131,8 @@ def edit_product(request, slug):
 
 
 @login_required
-def delete_product(request, id):
-    product = get_object_or_404(Product, id=id)
+def delete_product(request, slug):
+    product = get_object_or_404(Product, slug=slug)
     product.delete()
     return redirect('my_list')
 
@@ -226,17 +233,17 @@ def edit_bid(request, id):
 
 
 @login_required
-def close_bid(request, id):
-    product = get_object_or_404(Product, id=id)
+def close_bid(request, slug):
+    product = get_object_or_404(Product, slug=slug)
     if request.user != product.user:
-        return redirect("product_detail", id=product.id)
+        return redirect("product_detail", slug=product.slug)
     product.is_bidding_open = False
     highest_bid = Bidding.objects.filter(product=product).order_by('-amount').first()
     if highest_bid:
         product.winner = highest_bid.user
     product.save()
 
-    return redirect("product_detail", id=product.id)
+    return redirect("product_detail", slug=product.slug)
 
 
 @login_required
@@ -260,3 +267,18 @@ def unlike_product(request, product_slug):
     if like:
         like.delete()
     return redirect('ecome')
+
+
+@login_required
+def add_cart(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
+    Cart.objects.get_or_create(user=request.user, product=product)
+    return redirect('cart_products')
+
+
+@login_required
+def cart_products(request):
+    carts = Cart.objects.filter(user=request.user).select_related('product')
+    return render(request, "product/cart_products.html", {"carts": carts})
+
+
