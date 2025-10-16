@@ -1,8 +1,7 @@
 from pyexpat.errors import messages
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from .models import Product, Bidding, Like, Category, Cart
-from .models import Review
+from .models import Product, Review, Bidding, Like, Category, Cart
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 
@@ -40,20 +39,22 @@ def product_detail(request, slug):
     reviews = product.reviews.all()
     bids = product.bids.all().order_by('-amount')
 
-    liked = False
+    is_liked = False
     in_cart = False
 
     if request.user.is_authenticated:
-        liked = Like.objects.filter(user=request.user, product=product).exists()
+        is_liked = Like.objects.filter(user=request.user, product=product).exists()
         in_cart = Cart.objects.filter(user=request.user, product=product).exists()
+
 
     return render(request, "product/product_detail.html", {
         "product": product,
         "reviews": reviews,
         "bids": bids,
-        "liked": liked,
+        "is_liked": is_liked,
         "in_cart": in_cart,
         "highest_bid": highest_bid,
+        "like_count": product.likes.count(),
     })
 
 
@@ -211,25 +212,41 @@ def add_bid(request, slug):
 
 
 
-
 @login_required
-def edit_bid(request, id):
-    bid = get_object_or_404(Bidding, id=id)
+def edit_bid(request, slug):
+    bid = get_object_or_404(Bidding, slug=slug)
+
+    # Ensure only the user who placed the bid can edit it
+    if bid.user != request.user:
+        messages.error(request, "You are not allowed to edit this bid.")
+        return redirect("product_detail", slug=bid.product.slug)
 
     if request.method == "POST":
         amount = request.POST.get('amount')
-        bid.amount = amount
 
+        # Validate input
         if not amount:
-            return render(request, 'product/edit_bid.html', {
-                'bid': bid, 'error': "Please enter a bid amount."
-            })
+            messages.error(request, "Please enter a bid amount.")
+            return render(request, "product/edit_bid.html", {"bid": bid})
 
+        try:
+            amount = float(amount)
+            if amount <= 0:
+                raise ValueError("Amount must be positive.")
+        except ValueError:
+            messages.error(request, "Please enter a valid bid amount.")
+            return render(request, "product/edit_bid.html", {"bid": bid})
+
+        # Update the bid
         bid.amount = amount
         bid.save()
+
+        messages.success(request, "Your bid has been updated successfully!")
         return redirect("product_detail", slug=bid.product.slug)
 
     return render(request, "product/edit_bid.html", {"bid": bid})
+
+
 
 
 @login_required
@@ -249,8 +266,15 @@ def close_bid(request, slug):
 @login_required
 def add_like(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
-    Like.objects.get_or_create(user=request.user, product=product)
-    return redirect('liked_products')
+    like = Like.objects.filter(user=request.user, product=product).first()
+
+    if like:
+        like.delete()  # Unlike if already liked
+    else:
+        Like.objects.create(user=request.user, product=product)  # Like it
+
+    return redirect('product_detail', slug=product.slug)
+
 
 
 
@@ -260,13 +284,7 @@ def liked_products(request):
     return render(request, "product/liked_products.html", {"likes": likes})
 
 
-@login_required
-def unlike_product(request, product_slug):
-    product = get_object_or_404(Product, slug=product_slug)
-    like = Like.objects.filter(user=request.user, product=product).first()
-    if like:
-        like.delete()
-    return redirect('ecome')
+
 
 
 @login_required

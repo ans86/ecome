@@ -9,7 +9,7 @@
   <title>{% block title %}Ecome{% endblock %}</title>
   {% load static %}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
 
@@ -190,6 +190,7 @@
               <li><a class="dropdown-item" href="#">Orders</a></li>
               <li><a class="dropdown-item" href="{% url 'my_list' %}">My Listing</a></li>
               <li><a class="dropdown-item" href="{% url 'liked_products' %}">Liked Products</a></li>
+              <li><a class="dropdown-item" href="{% url 'cart_products' %}">Carts</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
