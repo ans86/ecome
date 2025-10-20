@@ -1,4 +1,6 @@
+from itertools import product
 from pyexpat.errors import messages
+from django.contrib import messages
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from .models import Product, Review, Bidding, Like, Category, Cart
@@ -190,28 +192,6 @@ def add_bid(request, slug):
     return render(request, "product/add_bid.html", {"product": product})
 
 
-# @login_required
-# def add_bid(request, id):
-#     product = get_object_or_404(Product, id=id)
-#     if request.method == "POST":
-#         amount = request.POST.get('amount')
-#         Bidding.objects.create(product=product, user=request.user, amount=amount)
-#         return redirect('product_detail', id=id)
-#     return redirect('product_detail', id=id)
-
-# @login_required
-# def add_review(request, id):
-#     product = get_object_or_404(Product, id=id)
-#     if request.method == "POST":
-#         comment = request.POST.get('comment')
-#         rating = request.POST.get('rating')
-#         Review.objects.create(product=product, user=request.user, comment=comment, rating=rating)
-#         return redirect('product_detail', id=id)
-#     return redirect('product_detail', id=id)
-
-
-
-
 @login_required
 def edit_bid(request, slug):
     bid = get_object_or_404(Bidding, slug=slug)
@@ -276,15 +256,10 @@ def add_like(request, product_slug):
     return redirect('product_detail', slug=product.slug)
 
 
-
-
 @login_required
 def liked_products(request):
     likes = Like.objects.filter(user=request.user).select_related('product')
     return render(request, "product/liked_products.html", {"likes": likes})
-
-
-
 
 
 @login_required
@@ -299,4 +274,22 @@ def cart_products(request):
     carts = Cart.objects.filter(user=request.user).select_related('product')
     return render(request, "product/cart_products.html", {"carts": carts})
 
+
+
+@login_required
+def remove_from_cart(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    Cart.objects.filter(user=request.user, product=product).delete()
+    messages.success(request, "Item removed from your cart.")
+    return redirect('cart_products')
+
+@login_required
+def update_cart_quantity(request, slug):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, slug=slug)
+        cart_item = get_object_or_404(Cart, product=product, user=request.user)
+        quantity = int(request.POST.get('quantity', 1))
+        cart_item.quantity = quantity
+        cart_item.save()
+        return redirect('cart_products')
 

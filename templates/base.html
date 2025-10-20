@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   {% load static %}
   <title>{% block title %}Ecome{% endblock %}</title>
   {% load static %}
@@ -17,23 +18,17 @@
 
 <body>
 
-  <!-- Kimi Navbar -->
-
-
+  <!-- NavBar -->
   <nav id="mainNav" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-blur" data-bs-theme="dark">
     <div class="container-fluid">
       <!-- 1. Logo -->
-      <a class="navbar-brand d-flex align-items-center" href="{% url 'ecome' %}">
-        <!-- <img src="{% static 'images/a.jpeg' %}" alt="Shope" height="32"> -->
-      </a>
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'ecome' %}"></a>
 
-      <!-- 2. Mobile toggler -->
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- 3. Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link px-3" href="{% url 'ecome' %}">Ecome</a>
@@ -79,11 +74,10 @@
 
         </ul>
 
-        <!-- 4. Search bar (centred, collapsible) -->
         <form id="searchForm" class="search-bar mx-auto d-flex flex-grow-1" action="{% url 'search' %}" method="get"
           style="max-width: 400px">
           <div class="input-group input-group-sm">
-            <!-- category filter -->
+
             <select class="form-select form-select-sm" name="category" aria-label="Category">
               <option value="selected">All</option>
               <option value="electronics">Electronics</option>
@@ -156,27 +150,24 @@
               aria-label="Search" required>
 
             <button class="btn btn-warning" type="submit">
-
+            🔍
               <i class="bi bi-search"></i>
             </button>
           </div>
         </form>
 
-        <!-- 5. Right area -->
         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-          <!-- Cart -->
-          <li class="nav-item mx-2">
-            <a class="nav-link position-relative" href="#" aria-label="Cart">
-              <i class="bi bi-cart3 fs-5"></i>
-              <span id="cartBadge"
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                0
-              </span>
-            </a>
-          </li>
+        <li class="nav-item mx-2">
+        <a class="nav-link position-relative" href="{% url 'cart_products' %}" aria-label="Cart">
+        <img src="{% static 'images/cartt.png' %}" alt="avatar" width="32" height="32" class="cart">
+        <span id="cartBadge"
+         class="position-absolute top-10 start-100 size translate-middle badge rounded-pill bg-danger">
+        {{ cart_count }}
+        </span>
+        </a>
+  </li>
 
-          <!-- User -->
           {% if user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDrop" role="button"
@@ -218,7 +209,6 @@
   </nav>
 
 
-  <!-- Content -->
   <div class="container mt-4">
     {% block content %}{% endblock %}
   </div>

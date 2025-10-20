@@ -5,7 +5,7 @@
 
 <div class="row">
   {% for cart in carts %} {% with product=cart.product %}
-  <div class="col-md-3 mb-4">
+  <div class="col-md-4 mb-4">
     <div
       class="card shadow-lg h-100 overflow-hidden product-card"
       style="transition: transform 0.3s ease, box-shadow 0.3s ease"
@@ -28,6 +28,7 @@
               object-fit: cover;
               transition: transform 0.5s ease;
             "
+          />
           />
           <div
             class="image-overlay"
@@ -87,6 +88,37 @@
             <span class="text-danger">Out of Stock</span>
             {% endif %}
           </p>
+          <!-- Editable quantity form -->
+          <form
+            action="{% url 'update_cart_quantity' cart.product.slug %}"
+            method="post"
+            class="d-flex align-items-center mb-2"
+          >
+            {% csrf_token %}
+            <label for="quantity_{{ cart.id }}" class="me-2"
+              ><strong>Quantity:</strong></label
+            >
+            <input
+              type="number"
+              name="quantity"
+              id="quantity_{{ cart.id }}"
+              value="{{ cart.quantity }}"
+              min="1"
+              class="form-control form-control-sm w-25 me-2"
+            />
+            <button type="submit" class="btn btn-outline-success btn-sm">
+              Update
+            </button>
+          </form>
+          <form
+            action="{% url 'remove_from_cart' cart.product.slug %}"
+            method="post"
+          >
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm w-100">
+              Remove
+            </button>
+          </form>
         </div>
       </div>
     </div>
